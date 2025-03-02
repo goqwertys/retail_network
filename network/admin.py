@@ -10,11 +10,8 @@ class NetworkNodeAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'supplier_link',
-        'email',
+        'level_display',
         'country',
-        'city',
-        'street',
-        'house_number',
     )
     list_filter = ('city',)
     search_fields = ('name', 'city', 'country')
