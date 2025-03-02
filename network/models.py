@@ -5,6 +5,11 @@ from users.models import NULLABLE
 
 class NetworkNode(models.Model):
     """ Node model """
+    LEVEL_CHOICES = {
+        0: 'Factory',
+        1: 'Retail network',
+        2: 'Individual entrepreneur',
+    }
     name = models.CharField(max_length=150, verbose_name='Name')
     email = models.EmailField(verbose_name='Email')
     country = models.CharField(max_length=100, verbose_name='Country')
@@ -26,6 +31,12 @@ class NetworkNode(models.Model):
         default=0.00
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
+
+    @property
+    def level_display(self):
+        """ Returns textual representation of the level """
+        level = self.get_level()
+        return self.LEVEL_CHOICES.get(level, 'Unknown level')
 
     def get_level(self):
         """ Returns level of hierarchy """
