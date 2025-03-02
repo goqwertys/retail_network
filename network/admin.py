@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 
-from network.models import NetworkNode
+from network.models import NetworkNode, Product
 
 
 @admin.register(NetworkNode)
@@ -33,3 +33,9 @@ class NetworkNodeAdmin(admin.ModelAdmin):
         queryset.update(debt=0.00)
 
     actions = [clear_debt]
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'model', 'release_date', 'supplier')
+    search_fields = ('name', 'model')
