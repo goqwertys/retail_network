@@ -42,3 +42,23 @@ class NetworkNode(models.Model):
     class Meta:
         verbose_name = 'Network node'
         verbose_name_plural = 'Network nodes'
+
+
+class Product(models.Model):
+    """ Product model """
+    name = models.CharField(max_length=255, verbose_name='Name')
+    model = models.CharField(max_length=255, verbose_name='Model')
+    release_date = models.DateField(verbose_name='Release date')
+    supplier = models.ForeignKey(
+        NetworkNode,
+        on_delete=models.CASCADE,
+        related_name='products',
+        verbose_name='Supplier'
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
