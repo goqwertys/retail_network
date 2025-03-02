@@ -12,16 +12,23 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class SupplierSerializer(serializers.ModelSerializer):
+    level_display = serializers.SerializerMethodField()
+
     class Meta:
         model = NetworkNode
-        fields = ('id', 'name', 'country', 'city')
+        fields = ('id', 'name', 'country', 'city', 'level_display')
+
+    def get_level_display(self, obj):
+        """ Returns textual representation of the level """
+        return obj.level_display
 
 
 class NetworkNodeSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)
-    supplier = SupplierSerializer(read_only=True)
-    level = serializers.SerializerMethodField()
+    supplier = serializers.PrimaryKeyRelatedField(queryset=NetworkNode.objects.all(), allow_null=True, write_only=True)
+    supplier_details = SupplierSerializer(source='supplier', read_only=True)
     debt = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    level_display = serializers.SerializerMethodField()
 
     class Meta:
         model = NetworkNode
@@ -36,9 +43,11 @@ class NetworkNodeSerializer(serializers.ModelSerializer):
             'debt',
             'created_at',
             'supplier',
+            'supplier_details',
             'products',
-            'level'
+            'level_display'
         )
 
-    def get_level(self, obj):
-        return obj.get_level()
+    def get_level_display(self, obj):
+        """ Returns textual representation of the level """
+        return obj.level_display
