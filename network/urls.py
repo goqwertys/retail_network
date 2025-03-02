@@ -6,7 +6,7 @@ from network.views import NetworkViewSet, ProductViewSet
 app_name = NetworkConfig.name
 
 router = SimpleRouter()
-router.register('network', NetworkViewSet)
+router.register('nodes', NetworkViewSet)
 router.register('products', ProductViewSet)
 
 urlpatterns = []
